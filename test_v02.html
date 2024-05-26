@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <button class="api-btn" onclick="requestUserInfo()">사용자 정보 가져오기</button>
+
+    <style>
+
+        
+    </style>
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
+    <script>
+        // window.Kakao.init("954bb7c9e8fdf63f1d32699cbb103a47"); // 키를 가지고 검증
+        // https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=954bb7c9e8fdf63f1d32699cbb103a47&redirect_uri=http://127.0.0.1:5500/test_v02.html
+        window.Kakao.init("954bb7c9e8fdf63f1d32699cbb103a47");
+
+        test()
+
+        function test() {
+            const params = new URLSearchParams(window.location.search);
+            const value = params.get('code');
+            alert('code: ' + value);
+            $.ajax({
+                type : "POST"
+                , url : 'https://kauth.kakao.com/oauth/token'
+                , data : {
+                    grant_type : 'authorization_code',
+                    client_id : '281993ba1dec390803b5b461dc149c75',
+                    redirect_uri : 'http://127.0.0.1:5500/test_v02.html',
+                    code : value
+                }
+                , contentType:'application/x-www-form-urlencoded;charset=utf-8'
+                , dataType: null
+                , success : function(response) {
+                    //alert('response.access_token: ' + response.access_token)
+                    //alert('Kakao: ' + Kakao)
+                    //alert('Kakao.Auth: ' + Kakao.Auth)
+                    Kakao.Auth.setAccessToken(response.access_token);
+
+                }
+                ,error : function(jqXHR, error) {
+            
+                }
+            });
+
+        }
+
+        function requestUserInfo() {
+            Kakao.API.request({
+                url: '/v2/user/me',
+            })
+            .then(function(res) {
+                //var stringfiedRes = JSON.stringify(res)
+                console.log(res);
+                alert('id: ' + res.id)
+                alert('이름: ' + res.properties.nickname)
+                alert('이메일: ' + res.kakao_account.email)
+
+            })
+            .catch(function(err) {
+                alert(
+                    'failed to request user information: ' + JSON.stringify(err)
+                );
+            });
+        }
+        
+    </script>
+    
+</body>
+</html>

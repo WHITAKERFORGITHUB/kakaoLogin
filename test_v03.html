@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+             crossorigin="anonymous"></script>
+</head>
+<body>
+    <a href="javascript:kakaoLogin();">카카오 로그인</a>
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.js">
+    </script>
+
+    <script>
+        // 954bb7c9e8fdf63f1d32699cbb103a47
+        window.Kakao.init("281993ba1dec390803b5b461dc149c75"); // 키를 가지고 검증
+        //console.log(Kakao.isInitialized())
+        
+        
+        function kakaoLogin() {
+            window.Kakao.Auth.authorize({
+                redirectUri: 'http://127.0.0.1:5500/test_v02.html',
+            })
+        }
+
+
+        
+
+    </script>
+</body>
+</html>
